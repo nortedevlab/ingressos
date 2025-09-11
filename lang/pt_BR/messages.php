@@ -57,4 +57,9 @@ return [
     'booth_deleted' => 'Guichê removido com sucesso!',
     'booth_listed'  => 'Guichês listados com sucesso!',
     'booth_fetched' => 'Guichê carregado com sucesso!',
+    'attendant_created' => 'Atendente criado com sucesso!',
+    'attendant_updated' => 'Atendente atualizado com sucesso!',
+    'attendant_deleted' => 'Atendente removido com sucesso!',
+    'attendant_listed'  => 'Atendentes listados com sucesso!',
+    'attendant_fetched' => 'Atendente carregado com sucesso!',
 ];
