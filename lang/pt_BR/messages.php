@@ -42,4 +42,9 @@ return [
     'coupon_deleted' => 'Cupom removido com sucesso!',
     'coupon_listed'  => 'Cupons listados com sucesso!',
     'coupon_fetched' => 'Cupom carregado com sucesso!',
+    'gateway_created' => 'Gateway criado com sucesso!',
+    'gateway_updated' => 'Gateway atualizado com sucesso!',
+    'gateway_deleted' => 'Gateway removido com sucesso!',
+    'gateway_listed'  => 'Gateways listados com sucesso!',
+    'gateway_fetched' => 'Gateway carregado com sucesso!',
 ];
