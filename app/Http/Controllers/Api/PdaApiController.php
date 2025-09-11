@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccessLog;
 use App\Models\Pda;
+use App\Models\Ticket;
 use App\Services\PdaService;
 use App\Http\Requests\StorePdaRequest;
 use App\Http\Requests\UpdatePdaRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * API Controller para PDAs
@@ -58,5 +61,55 @@ class PdaApiController extends Controller
         return response()->json([
             'message' => __('messages.pda_deleted'),
         ], 204);
+    }
+
+    /**
+     * Valida e registra o uso de um ingresso no PDA.
+     *
+     * @param Request $request
+     * @param Pda $pda
+     * @return JsonResponse
+     */
+    public function scanTicket(Request $request, Pda $pda): JsonResponse
+    {
+        $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
+        ]);
+
+        $ticket = Ticket::findOrFail($request->ticket_id);
+
+        // verifica se ingresso já foi usado
+        $alreadyUsed = AccessLog::where('ticket_id', $ticket->id)
+            ->where('status', 'allowed')
+            ->exists();
+
+        if ($alreadyUsed) {
+            $log = AccessLog::create([
+                'pda_id'    => $pda->id,
+                'ticket_id' => $ticket->id,
+                'status'    => 'denied',
+                'message'   => __('messages.ticket_already_used'),
+            ]);
+
+            return response()->json([
+                'status'  => 'denied',
+                'message' => __('messages.ticket_already_used'),
+                'log'     => $log,
+            ], 200);
+        }
+
+        // registra como permitido
+        $log = AccessLog::create([
+            'pda_id'    => $pda->id,
+            'ticket_id' => $ticket->id,
+            'status'    => 'allowed',
+            'message'   => __('messages.ticket_validated'),
+        ]);
+
+        return response()->json([
+            'status'  => 'allowed',
+            'message' => __('messages.ticket_validated'),
+            'log'     => $log,
+        ], 200);
     }
 }
