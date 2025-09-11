@@ -17,4 +17,9 @@ return [
     'client_deleted' => 'Cliente removido com sucesso!',
     'client_listed'  => 'Clientes listados com sucesso!',
     'client_fetched' => 'Cliente carregado com sucesso!',
+    'ticket_created' => 'Ingresso criado com sucesso!',
+    'ticket_updated' => 'Ingresso atualizado com sucesso!',
+    'ticket_deleted' => 'Ingresso removido com sucesso!',
+    'ticket_listed'  => 'Ingressos listados com sucesso!',
+    'ticket_fetched' => 'Ingresso carregado com sucesso!',
 ];
