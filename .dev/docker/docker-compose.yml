@@ -9,7 +9,7 @@ services:
     ports:
       - "8085:80"
     environment:
-      - TZ=America/Sao_Paulo
+      - TZ=America/Belem
       - DB_HOST=db
       - DB_NAME=cwb_ingressos
       - DB_USER=cwb_ingressos
