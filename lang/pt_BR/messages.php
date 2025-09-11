@@ -70,4 +70,7 @@ return [
     'log_created' => 'Log de acesso registrado com sucesso!',
     'log_listed'  => 'Logs de acesso listados com sucesso!',
     'log_fetched' => 'Log de acesso carregado com sucesso!',
+    'audit_created' => 'Log de auditoria registrado com sucesso!',
+    'audit_listed'  => 'Logs de auditoria listados com sucesso!',
+    'audit_fetched' => 'Log de auditoria carregado com sucesso!',
 ];
