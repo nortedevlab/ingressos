@@ -3,63 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use Illuminate\Http\Request;
+use App\Services\CompanyService;
+use App\Http\Requests\StoreCompanyRequest;
+use App\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Empresas
+ */
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly CompanyService $companyService
+    )
     {
-        //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(): View
     {
-        //
+        $companies = $this->companyService->all();
+        return view('companies.index', compact('companies'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function create(): View
     {
-        //
+        return view('companies.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Company $company)
+    public function store(StoreCompanyRequest $request): RedirectResponse
     {
-        //
+        $this->companyService->create($request->validated());
+        return redirect()->route('companies.index')
+            ->with('success', __('messages.company_created'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Company $company)
+    public function show(Company $company): View
     {
-        //
+        return view('companies.show', compact('company'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Company $company)
+    public function edit(Company $company): View
     {
-        //
+        return view('companies.edit', compact('company'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Company $company)
+    public function update(UpdateCompanyRequest $request, Company $company): RedirectResponse
     {
-        //
+        $this->companyService->update($company, $request->validated());
+        return redirect()->route('companies.index')
+            ->with('success', __('messages.company_updated'));
+    }
+
+    public function destroy(Company $company): RedirectResponse
+    {
+        $this->companyService->delete($company);
+        return redirect()->route('companies.index')
+            ->with('success', __('messages.company_deleted'));
     }
 }
