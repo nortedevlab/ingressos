@@ -78,4 +78,5 @@ return [
     'audit_created' => 'Log de auditoria registrado com sucesso!',
     'audit_listed'  => 'Logs de auditoria listados com sucesso!',
     'audit_fetched' => 'Log de auditoria carregado com sucesso!',
+    'report_generated' => 'Relatório gerado com sucesso!',
 ];
