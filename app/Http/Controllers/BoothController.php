@@ -3,63 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booth;
-use Illuminate\Http\Request;
+use App\Models\Event;
+use App\Services\BoothService;
+use App\Http\Requests\StoreBoothRequest;
+use App\Http\Requests\UpdateBoothRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Guichês (Booths)
+ */
 class BoothController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly BoothService $boothService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $booths = $this->boothService->all();
+        return view('booths.index', compact('booths'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $events = Event::all();
+        return view('booths.create', compact('events'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreBoothRequest $request): RedirectResponse
     {
-        //
+        $this->boothService->create($request->validated());
+        return redirect()->route('booths.index')
+            ->with('success', __('messages.booth_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booth $booth)
+    public function show(Booth $booth): View
     {
-        //
+        return view('booths.show', compact('booth'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Booth $booth)
+    public function edit(Booth $booth): View
     {
-        //
+        $events = Event::all();
+        return view('booths.edit', compact('booth','events'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Booth $booth)
+    public function update(UpdateBoothRequest $request, Booth $booth): RedirectResponse
     {
-        //
+        $this->boothService->update($booth, $request->validated());
+        return redirect()->route('booths.index')
+            ->with('success', __('messages.booth_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Booth $booth)
+    public function destroy(Booth $booth): RedirectResponse
     {
-        //
+        $this->boothService->delete($booth);
+        return redirect()->route('booths.index')
+            ->with('success', __('messages.booth_deleted'));
     }
 }

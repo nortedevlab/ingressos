@@ -52,4 +52,9 @@ return [
     'fee_deleted' => 'Taxa de serviço removida com sucesso!',
     'fee_listed'  => 'Taxas de serviço listadas com sucesso!',
     'fee_fetched' => 'Taxa de serviço carregada com sucesso!',
+    'booth_created' => 'Guichê criado com sucesso!',
+    'booth_updated' => 'Guichê atualizado com sucesso!',
+    'booth_deleted' => 'Guichê removido com sucesso!',
+    'booth_listed'  => 'Guichês listados com sucesso!',
+    'booth_fetched' => 'Guichê carregado com sucesso!',
 ];
