@@ -27,4 +27,9 @@ return [
     'batch_deleted' => 'Lote removido com sucesso!',
     'batch_listed'  => 'Lotes listados com sucesso!',
     'batch_fetched' => 'Lote carregado com sucesso!',
+    'order_created' => 'Pedido criado com sucesso!',
+    'order_updated' => 'Pedido atualizado com sucesso!',
+    'order_deleted' => 'Pedido removido com sucesso!',
+    'order_listed'  => 'Pedidos listados com sucesso!',
+    'order_fetched' => 'Pedido carregado com sucesso!',
 ];

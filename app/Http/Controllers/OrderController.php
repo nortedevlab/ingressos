@@ -3,63 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\Event;
+use App\Services\OrderService;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Pedidos
+ */
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly OrderService $orderService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $orders = $this->orderService->all();
+        return view('orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $clients = Client::all();
+        $events  = Event::all();
+        return view('orders.create', compact('clients','events'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request): RedirectResponse
     {
-        //
+        $this->orderService->create($request->validated());
+        return redirect()->route('orders.index')
+            ->with('success', __('messages.order_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+    public function show(Order $order): View
     {
-        //
+        return view('orders.show', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function edit(Order $order): View
     {
-        //
+        $clients = Client::all();
+        $events  = Event::all();
+        return view('orders.edit', compact('order','clients','events'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
+    public function update(UpdateOrderRequest $request, Order $order): RedirectResponse
     {
-        //
+        $this->orderService->update($order, $request->validated());
+        return redirect()->route('orders.index')
+            ->with('success', __('messages.order_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+    public function destroy(Order $order): RedirectResponse
     {
-        //
+        $this->orderService->delete($order);
+        return redirect()->route('orders.index')
+            ->with('success', __('messages.order_deleted'));
     }
 }
