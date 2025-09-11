@@ -12,4 +12,9 @@ return [
     'company_deleted' => 'Empresa removida com sucesso!',
     'company_listed' => 'Empresas listadas com sucesso!',
     'company_fetched' => 'Empresa carregada com sucesso!',
+    'client_created' => 'Cliente criado com sucesso!',
+    'client_updated' => 'Cliente atualizado com sucesso!',
+    'client_deleted' => 'Cliente removido com sucesso!',
+    'client_listed'  => 'Clientes listados com sucesso!',
+    'client_fetched' => 'Cliente carregado com sucesso!',
 ];
