@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Services\EventService;
+use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * API Controller para Eventos
@@ -15,83 +16,45 @@ class EventApiController extends Controller
 {
     public function __construct(
         private readonly EventService $eventService
-    )
-    {
-    }
+    ) {}
 
-    /**
-     * Lista eventos
-     */
     public function index(): JsonResponse
     {
-        $events = $this->eventService->all();
         return response()->json([
             'message' => __('messages.event_listed'),
-            'data' => $events
+            'data'    => $this->eventService->all()
         ]);
     }
 
-    /**
-     * Cria evento
-     */
-    public function store(Request $request): JsonResponse
+    public function store(StoreEventRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'title' => 'required|string|max:255',
-            'type' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'location' => 'required|string|max:255',
-        ]);
-
-        $event = $this->eventService->create($validated);
-
+        $event = $this->eventService->create($request->validated());
         return response()->json([
             'message' => __('messages.event_created'),
-            'data' => $event
+            'data'    => $event
         ], 201);
     }
 
-    /**
-     * Exibe evento
-     */
     public function show(Event $event): JsonResponse
     {
         return response()->json([
             'message' => __('messages.event_fetched'),
-            'data' => $event
+            'data'    => $event
         ]);
     }
 
-    /**
-     * Atualiza evento
-     */
-    public function update(Request $request, Event $event): JsonResponse
+    public function update(UpdateEventRequest $request, Event $event): JsonResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'location' => 'required|string|max:255',
-        ]);
-
-        $updated = $this->eventService->update($event, $validated);
-
+        $updated = $this->eventService->update($event, $request->validated());
         return response()->json([
             'message' => __('messages.event_updated'),
-            'data' => $updated
+            'data'    => $updated
         ]);
     }
 
-    /**
-     * Remove evento
-     */
     public function destroy(Event $event): JsonResponse
     {
         $this->eventService->delete($event);
-
         return response()->json([
             'message' => __('messages.event_deleted'),
         ], 204);

@@ -5,9 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Request para criação de evento
+ * Request para atualização de evento
  */
-class StoreEventRequest extends FormRequest
+class UpdateEventRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,7 +17,6 @@ class StoreEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company_id'  => 'required|exists:companies,id',
             'title'       => 'required|string|max:255',
             'type'        => 'required|string',
             'start_date'  => 'required|date',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Services\EventService;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -45,7 +46,7 @@ class EventController extends Controller
         return view('events.edit', compact('event'));
     }
 
-    public function update(StoreEventRequest $request, Event $event): RedirectResponse
+    public function update(UpdateEventRequest $request, Event $event): RedirectResponse
     {
         $this->eventService->update($event, $request->validated());
         return redirect()->route('events.index')
