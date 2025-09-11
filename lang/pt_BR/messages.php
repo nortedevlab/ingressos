@@ -62,4 +62,9 @@ return [
     'attendant_deleted' => 'Atendente removido com sucesso!',
     'attendant_listed'  => 'Atendentes listados com sucesso!',
     'attendant_fetched' => 'Atendente carregado com sucesso!',
+    'pda_created' => 'PDA criado com sucesso!',
+    'pda_updated' => 'PDA atualizado com sucesso!',
+    'pda_deleted' => 'PDA removido com sucesso!',
+    'pda_listed'  => 'PDAs listados com sucesso!',
+    'pda_fetched' => 'PDA carregado com sucesso!',
 ];

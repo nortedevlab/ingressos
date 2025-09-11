@@ -3,63 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pda;
-use Illuminate\Http\Request;
+use App\Models\Event;
+use App\Services\PdaService;
+use App\Http\Requests\StorePdaRequest;
+use App\Http\Requests\UpdatePdaRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para PDAs
+ */
 class PdaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly PdaService $pdaService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $pdas = $this->pdaService->all();
+        return view('pdas.index', compact('pdas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $events = Event::all();
+        return view('pdas.create', compact('events'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StorePdaRequest $request): RedirectResponse
     {
-        //
+        $this->pdaService->create($request->validated());
+        return redirect()->route('pdas.index')
+            ->with('success', __('messages.pda_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pda $pda)
+    public function show(Pda $pda): View
     {
-        //
+        return view('pdas.show', compact('pda'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pda $pda)
+    public function edit(Pda $pda): View
     {
-        //
+        $events = Event::all();
+        return view('pdas.edit', compact('pda','events'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pda $pda)
+    public function update(UpdatePdaRequest $request, Pda $pda): RedirectResponse
     {
-        //
+        $this->pdaService->update($pda, $request->validated());
+        return redirect()->route('pdas.index')
+            ->with('success', __('messages.pda_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pda $pda)
+    public function destroy(Pda $pda): RedirectResponse
     {
-        //
+        $this->pdaService->delete($pda);
+        return redirect()->route('pdas.index')
+            ->with('success', __('messages.pda_deleted'));
     }
 }
