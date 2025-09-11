@@ -3,63 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccessLog;
-use Illuminate\Http\Request;
+use App\Services\AccessLogService;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Logs de Acesso
+ */
 class AccessLogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly AccessLogService $logService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $logs = $this->logService->all();
+        return view('access_logs.index', compact('logs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(AccessLog $accessLog): View
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(AccessLog $accessLog)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AccessLog $accessLog)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AccessLog $accessLog)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AccessLog $accessLog)
-    {
-        //
+        return view('access_logs.show', compact('accessLog'));
     }
 }

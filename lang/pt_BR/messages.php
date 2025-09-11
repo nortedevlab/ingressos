@@ -67,4 +67,7 @@ return [
     'pda_deleted' => 'PDA removido com sucesso!',
     'pda_listed'  => 'PDAs listados com sucesso!',
     'pda_fetched' => 'PDA carregado com sucesso!',
+    'log_created' => 'Log de acesso registrado com sucesso!',
+    'log_listed'  => 'Logs de acesso listados com sucesso!',
+    'log_fetched' => 'Log de acesso carregado com sucesso!',
 ];
