@@ -3,63 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\DiscountCoupon;
-use Illuminate\Http\Request;
+use App\Models\Event;
+use App\Services\DiscountCouponService;
+use App\Http\Requests\StoreDiscountCouponRequest;
+use App\Http\Requests\UpdateDiscountCouponRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Cupons de Desconto / Cortesias
+ */
 class DiscountCouponController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly DiscountCouponService $couponService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $coupons = $this->couponService->all();
+        return view('discount_coupons.index', compact('coupons'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $events = Event::all();
+        return view('discount_coupons.create', compact('events'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreDiscountCouponRequest $request): RedirectResponse
     {
-        //
+        $this->couponService->create($request->validated());
+        return redirect()->route('discount-coupons.index')
+            ->with('success', __('messages.coupon_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DiscountCoupon $discountCoupon)
+    public function show(DiscountCoupon $discountCoupon): View
     {
-        //
+        return view('discount_coupons.show', compact('discountCoupon'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DiscountCoupon $discountCoupon)
+    public function edit(DiscountCoupon $discountCoupon): View
     {
-        //
+        $events = Event::all();
+        return view('discount_coupons.edit', compact('discountCoupon','events'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DiscountCoupon $discountCoupon)
+    public function update(UpdateDiscountCouponRequest $request, DiscountCoupon $discountCoupon): RedirectResponse
     {
-        //
+        $this->couponService->update($discountCoupon, $request->validated());
+        return redirect()->route('discount-coupons.index')
+            ->with('success', __('messages.coupon_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DiscountCoupon $discountCoupon)
+    public function destroy(DiscountCoupon $discountCoupon): RedirectResponse
     {
-        //
+        $this->couponService->delete($discountCoupon);
+        return redirect()->route('discount-coupons.index')
+            ->with('success', __('messages.coupon_deleted'));
     }
 }

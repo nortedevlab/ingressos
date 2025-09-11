@@ -37,4 +37,9 @@ return [
     'payment_deleted' => 'Pagamento removido com sucesso!',
     'payment_listed'  => 'Pagamentos listados com sucesso!',
     'payment_fetched' => 'Pagamento carregado com sucesso!',
+    'coupon_created' => 'Cupom criado com sucesso!',
+    'coupon_updated' => 'Cupom atualizado com sucesso!',
+    'coupon_deleted' => 'Cupom removido com sucesso!',
+    'coupon_listed'  => 'Cupons listados com sucesso!',
+    'coupon_fetched' => 'Cupom carregado com sucesso!',
 ];
