@@ -32,4 +32,9 @@ return [
     'order_deleted' => 'Pedido removido com sucesso!',
     'order_listed'  => 'Pedidos listados com sucesso!',
     'order_fetched' => 'Pedido carregado com sucesso!',
+    'payment_created' => 'Pagamento registrado com sucesso!',
+    'payment_updated' => 'Pagamento atualizado com sucesso!',
+    'payment_deleted' => 'Pagamento removido com sucesso!',
+    'payment_listed'  => 'Pagamentos listados com sucesso!',
+    'payment_fetched' => 'Pagamento carregado com sucesso!',
 ];

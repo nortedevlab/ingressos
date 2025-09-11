@@ -3,63 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
-use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Services\PaymentService;
+use App\Http\Requests\StorePaymentRequest;
+use App\Http\Requests\UpdatePaymentRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Pagamentos
+ */
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly PaymentService $paymentService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $payments = $this->paymentService->all();
+        return view('payments.index', compact('payments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $orders = Order::all();
+        return view('payments.create', compact('orders'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StorePaymentRequest $request): RedirectResponse
     {
-        //
+        $this->paymentService->create($request->validated());
+        return redirect()->route('payments.index')
+            ->with('success', __('messages.payment_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payment $payment)
+    public function show(Payment $payment): View
     {
-        //
+        return view('payments.show', compact('payment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
+    public function edit(Payment $payment): View
     {
-        //
+        $orders = Order::all();
+        return view('payments.edit', compact('payment','orders'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Payment $payment)
+    public function update(UpdatePaymentRequest $request, Payment $payment): RedirectResponse
     {
-        //
+        $this->paymentService->update($payment, $request->validated());
+        return redirect()->route('payments.index')
+            ->with('success', __('messages.payment_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Payment $payment)
+    public function destroy(Payment $payment): RedirectResponse
     {
-        //
+        $this->paymentService->delete($payment);
+        return redirect()->route('payments.index')
+            ->with('success', __('messages.payment_deleted'));
     }
 }
