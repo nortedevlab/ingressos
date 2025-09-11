@@ -47,4 +47,9 @@ return [
     'gateway_deleted' => 'Gateway removido com sucesso!',
     'gateway_listed'  => 'Gateways listados com sucesso!',
     'gateway_fetched' => 'Gateway carregado com sucesso!',
+    'fee_created' => 'Taxa de serviço criada com sucesso!',
+    'fee_updated' => 'Taxa de serviço atualizada com sucesso!',
+    'fee_deleted' => 'Taxa de serviço removida com sucesso!',
+    'fee_listed'  => 'Taxas de serviço listadas com sucesso!',
+    'fee_fetched' => 'Taxa de serviço carregada com sucesso!',
 ];
