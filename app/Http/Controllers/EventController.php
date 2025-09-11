@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use Illuminate\Http\Request;
+use App\Services\EventService;
+use App\Http\Requests\StoreEventRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Eventos (Blade)
+ */
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly EventService $eventService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $events = $this->eventService->all();
+        return view('events.index', compact('events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('events.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request): RedirectResponse
     {
-        //
+        $this->eventService->create($request->validated());
+        return redirect()->route('events.index')
+            ->with('success', __('messages.event_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
+    public function show(Event $event): View
     {
-        //
+        return view('events.show', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
+    public function edit(Event $event): View
     {
-        //
+        return view('events.edit', compact('event'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Event $event)
+    public function update(StoreEventRequest $request, Event $event): RedirectResponse
     {
-        //
+        $this->eventService->update($event, $request->validated());
+        return redirect()->route('events.index')
+            ->with('success', __('messages.event_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
+    public function destroy(Event $event): RedirectResponse
     {
-        //
+        $this->eventService->delete($event);
+        return redirect()->route('events.index')
+            ->with('success', __('messages.event_deleted'));
     }
 }
