@@ -3,63 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
-use Illuminate\Http\Request;
+use App\Models\Ticket;
+use App\Services\BatchService;
+use App\Http\Requests\StoreBatchRequest;
+use App\Http\Requests\UpdateBatchRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Controller Web para Lotes de Ingressos
+ */
 class BatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly BatchService $batchService
+    ) {}
+
+    public function index(): View
     {
-        //
+        $batches = $this->batchService->all();
+        return view('batches.index', compact('batches'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $tickets = Ticket::all();
+        return view('batches.create', compact('tickets'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreBatchRequest $request): RedirectResponse
     {
-        //
+        $this->batchService->create($request->validated());
+        return redirect()->route('batches.index')
+            ->with('success', __('messages.batch_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Batch $batch)
+    public function show(Batch $batch): View
     {
-        //
+        return view('batches.show', compact('batch'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Batch $batch)
+    public function edit(Batch $batch): View
     {
-        //
+        $tickets = Ticket::all();
+        return view('batches.edit', compact('batch', 'tickets'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Batch $batch)
+    public function update(UpdateBatchRequest $request, Batch $batch): RedirectResponse
     {
-        //
+        $this->batchService->update($batch, $request->validated());
+        return redirect()->route('batches.index')
+            ->with('success', __('messages.batch_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Batch $batch)
+    public function destroy(Batch $batch): RedirectResponse
     {
-        //
+        $this->batchService->delete($batch);
+        return redirect()->route('batches.index')
+            ->with('success', __('messages.batch_deleted'));
     }
 }

@@ -22,4 +22,9 @@ return [
     'ticket_deleted' => 'Ingresso removido com sucesso!',
     'ticket_listed'  => 'Ingressos listados com sucesso!',
     'ticket_fetched' => 'Ingresso carregado com sucesso!',
+    'batch_created' => 'Lote criado com sucesso!',
+    'batch_updated' => 'Lote atualizado com sucesso!',
+    'batch_deleted' => 'Lote removido com sucesso!',
+    'batch_listed'  => 'Lotes listados com sucesso!',
+    'batch_fetched' => 'Lote carregado com sucesso!',
 ];
