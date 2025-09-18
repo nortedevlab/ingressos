@@ -77,3 +77,49 @@ class AdminController extends Controller
     @endcan
 </ul>
 ```
+
+## Blade Directive @group
+
+```blade
+<ul>
+    @group('admin')
+        <li><a href="{{ route('admin.dashboard') }}">Painel Administrativo</a></li>
+    @endgroup
+
+    @group('manager')
+        <li><a href="{{ route('manager.dashboard') }}">Painel Gerente</a></li>
+    @endgroup
+
+    @group('account')
+        <li><a href="{{ route('account.dashboard') }}">Área do Cliente</a></li>
+    @endgroup
+
+    {{-- Vários grupos ao mesmo tempo --}}
+    @group('admin', 'manager')
+        <li><a href="{{ route('relatorios') }}">Relatórios</a></li>
+    @endgroup
+</ul>
+```
+
+## Blade Directive @permission
+
+```blade
+<ul>
+    @permission('access-admin')
+        <li><a href="{{ route('admin.dashboard') }}">Painel Administrativo</a></li>
+    @endpermission
+
+    @permission('access-manager')
+        <li><a href="{{ route('manager.dashboard') }}">Painel Gerente</a></li>
+    @endpermission
+
+    @permission('access-account')
+        <li><a href="{{ route('account.dashboard') }}">Área do Cliente</a></li>
+    @endpermission
+
+    {{-- Várias permissões ao mesmo tempo --}}
+    @permission('access-admin', 'access-manager')
+        <li><a href="{{ route('relatorios') }}">Relatórios</a></li>
+    @endpermission
+</ul>
+```
