@@ -36,8 +36,20 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'web' => [ // admin
             'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'company' => [ // colaboradores
+            'driver' => 'session',
+            'provider' => 'company_users',
+        ],
+        'client' => [ // clientes
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
+        'api' => [ // api global
+            'driver' => 'token',
             'provider' => 'users',
         ],
     ],
@@ -64,11 +76,14 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'company_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\CompanyUser::class,
+        ],
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Client::class,
+        ],
     ],
 
     /*
@@ -94,6 +109,18 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'company_users' => [
+            'provider' => 'company_users',
+            'table' => 'company_password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'clients' => [
+            'provider' => 'clients',
+            'table' => 'client_password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
