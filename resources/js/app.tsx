@@ -1,10 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {AuthProvider} from "./context/AuthContext";
+import AppRoutes from "./routes";
 
-import Home from './pages/Home';
-
-ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
-<React.StrictMode>
-    <Home />
-</React.StrictMode>
+ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
+    <React.StrictMode>
+        <AuthProvider>
+            <AppRoutes/>
+        </AuthProvider>
+    </React.StrictMode>
 );

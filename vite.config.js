@@ -4,6 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '@': '/resources/js',
+        },
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
@@ -11,5 +16,5 @@ export default defineConfig({
         }),
         tailwindcss(),
         react(),
-    ],
+    ]
 });
