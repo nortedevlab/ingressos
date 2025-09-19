@@ -1,33 +1,43 @@
 import React from "react";
 import {BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
+import PrivateLayout from "./components/layout/PrivateLayout";
+import Routing from "./pages/authorized/Routing";
+import AdminLayout from "./components/layout/AdminLayout";
+import AdminDashboard from "./pages/authorized/admin/AdminDashboard";
+import PublicLayout from "./components/layout/PublicLayout";
 import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
-import Dashboard from "./pages/authorized/Dashboard";
-import Profile from "./pages/authorized/Profile";
-import {useAuth} from "./context/AuthContext";
-
-// Layout que protege todas as rotas internas
-const PrivateLayout: React.FC = () => {
-    const {user, loading} = useAuth();
-
-    if (loading) return <p>Carregando...</p>;
-    if (!user) return <Navigate to="/login" replace/>;
-
-    return <Outlet/>; // renderiza as rotas filhas autenticadas
-};
+import AccountLayout from "./components/layout/AccountLayout";
+import Account from "./pages/authorized/account/Account";
+import ProfileForm from "./pages/authorized/account/ProfileForm";
+import PasswordForm from "./pages/authorized/account/PasswordForm";
 
 const AppRoutes: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
                 {/* Públicas */}
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route element={<PublicLayout/>}>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="login" element={<Login/>}/>
+                </Route>
 
-                {/* Autenticadas (todas agrupadas) */}
+                {/* Autenticadas */}
                 <Route element={<PrivateLayout/>}>
-                    <Route path="/dashboard" element={<Dashboard/>}/>
-                    <Route path="/profile" element={<Profile/>}/>
+                    <Route path="routing" element={<Routing/>}/>
+
+                    {/* Grupo /admin */}
+                    <Route path="admin" element={<AdminLayout/>}>
+                        <Route index element={<AdminDashboard/>}/> {/* /admin */}
+                        {/* Adicione mais rotas aqui → /admin/qualquer-coisa */}
+                    </Route>
+
+                    {/* Grupo /account */}
+                    <Route path="account" element={<AccountLayout/>}>
+                        <Route index element={<Account/>}/> {/* /account */}
+                        <Route path="profile" element={<ProfileForm/>}/>
+                        <Route path="password" element={<PasswordForm/>}/>
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

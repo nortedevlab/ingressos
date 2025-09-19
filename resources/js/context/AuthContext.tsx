@@ -1,28 +1,30 @@
 import React, {createContext, useContext, useState, useEffect, ReactNode} from "react";
 import api, {setStoredToken, getStoredToken} from "../utils/api";
 
-interface Permission {
+export interface Permission {
     id: number;
     name: string;
     slug: string;
 }
 
-interface Group {
+export interface Group {
     id: number;
     name: string;
     slug: string;
     permissions: Permission[];
 }
 
-interface User {
+export interface User {
     id: number;
     name: string;
     email: string;
     group?: Group;
+    avatar?: string;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
     user: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -36,7 +38,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        checkAuth();
+        let isMounted = true;
+
+        const runCheck = async () => {
+            if (!isMounted) return;
+            await checkAuth();
+        };
+
+        runCheck();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const checkAuth = async () => {
@@ -77,6 +90,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     const logout = async () => {
         try {
+            setLoading(true);
             await api.post("/api/logout");
         } catch (error) {
             console.error('Erro no logout:', error);
@@ -84,6 +98,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             // Sempre limpar dados locais
             setUser(null);
             setStoredToken(null);
+            setLoading(false);
         }
     };
 
@@ -93,7 +108,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, loading, login, logout, hasPermission}}>
+        <AuthContext.Provider value={{user, setUser, loading, login, logout, hasPermission}}>
             {children}
         </AuthContext.Provider>
     );

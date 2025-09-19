@@ -1,67 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 
 const Login: React.FC = () => {
-    const { login } = useAuth();
+    const { login, user, loading } = useAuth();
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("alessandro.souza@norte.dev.br");
+    const [password, setPassword] = useState("password");
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+
+    /** Se já estiver logado, redireciona direto para /routing */
+    useEffect(() => {
+        if (!loading && user) {
+            navigate("/routing", { replace: true });
+        }
+    }, [user, loading, navigate]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
-        setLoading(true);
+        setSubmitting(true);
 
         try {
             await login(email, password);
-            navigate("/dashboard");
+            navigate("/routing", { replace: true });
         } catch (err: any) {
             setError(err.response?.data?.message ?? "Erro ao autenticar");
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-            <h1>🔑 Login</h1>
+        <Box sx={{ maxWidth: 400, mx: "auto", mt: 8 }}>
+            <Typography variant="h4" component="h1" gutterBottom>
+                🔑 Login
+            </Typography>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {error}
+                </Alert>
+            )}
 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
+                <TextField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    fullWidth
+                    required
+                    margin="normal"
+                />
 
-                <div style={{ marginTop: "10px" }}>
-                    <label>Senha</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
+                <TextField
+                    label="Senha"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    fullWidth
+                    required
+                    margin="normal"
+                />
 
-                <button
+                <Button
                     type="submit"
-                    disabled={loading}
-                    style={{ marginTop: "15px" }}
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                    disabled={submitting}
                 >
-                    {loading ? "Entrando..." : "Entrar"}
-                </button>
+                    {submitting ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
+                </Button>
             </form>
-        </div>
+        </Box>
     );
 };
 

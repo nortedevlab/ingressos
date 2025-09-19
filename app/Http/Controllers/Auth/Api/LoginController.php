@@ -24,7 +24,7 @@ class LoginController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $user->load(['group','group.permissions']),
             'token' => $token,
         ]);
     }
@@ -32,23 +32,14 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         try {
-            $user = Auth::user();
+            $user = $request->user();
 
             if ($user) {
-                // Revoga o token atual (se usando Sanctum com tokens)
+                // Revogar somente o token atual
                 $user->currentAccessToken()?->delete();
 
-                // Ou revoga todos os tokens do usuário (opcional)
+                // Se quiser encerrar todos os tokens do usuário:
                 // $user->tokens()->delete();
-
-                // Se estiver usando sessões também, invalidar a sessão
-                if ($request->hasSession()) {
-                    $request->session()->invalidate();
-                    $request->session()->regenerateToken();
-                }
-
-                // Fazer logout do guard padrão
-                Auth::logout();
             }
 
             return response()->json([
@@ -73,7 +64,7 @@ class LoginController extends Controller
             }
 
             return response()->json([
-                'user' => $user->load('group.permissions')
+                'user' => $user->load(['group','group.permissions'])
             ]);
 
         } catch (\Exception $e) {
