@@ -42,7 +42,7 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) => {
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                     <Avatar
                         alt={user?.name ?? "Usuário"}
-                        src={user?.avatar ?? ""}
+                        src={user?.avatar ? `/storage/${user.avatar}` : "/static/images/avatar/placeholder.png"}
                     />
                 </IconButton>
             </Tooltip>
